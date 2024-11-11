@@ -1,0 +1,26 @@
+{
+  "index": "Introduction",
+  "installation": "Installation",
+  "component": "API",
+  "other": "Other",
+  "separator_versions": {
+    "type": "separator",
+    "title": ""
+  },
+  "updating": "Updating",
+  "changelog": {
+    "title": "Changelog",
+    "newWindow": true,
+    "href": "https://github.com/TheWidlarzGroup/react-native-video/blob/master/CHANGELOG.md"
+  },
+  "separator_community": {
+    "type": "separator",
+    "title": ""
+  },
+  "example_apps": {
+    "title": "Example Apps",
+    "newWindow": true,
+    "href": "https://github.com/TheWidlarzGroup/react-native-video/tree/master/examples"
+  },
+  "projects": "Useful projects"
+}
