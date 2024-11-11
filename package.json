@@ -1,0 +1,55 @@
+{
+    "name": "react-native-video",
+    "version": "6.7.0",
+    "description": "A <Video /> element for react-native",
+    "main": "lib/index",
+    "source": "src/index",
+    "react-native": "src/index",
+    "author": "Community Contributors",
+    "homepage": "https://docs.thewidlarzgroup.com/react-native-video/",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:TheWidlarzGroup/react-native-video-amazon.git"
+    },
+    "resolutions": {
+        "@types/react": "~18.0.0"
+    },
+    "devDependencies": {
+        "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
+        "@react-native/eslint-config": "^0.72.2",
+        "@release-it/conventional-changelog": "^7.0.2",
+        "@types/jest": "^28.1.2",
+        "@types/react": "~18.0.0",
+        "@types/react-native": "0.72.3",
+        "@typescript-eslint/eslint-plugin": "^6.7.4",
+        "eslint": "^8.19.0",
+        "eslint-plugin-jest": "^27.4.2",
+        "jest": "^29.7.0",
+        "prettier": "^2.4.1",
+        "react": "18.2.0",
+        "react-native": "0.72.0",
+        "release-it": "^16.2.1",
+        "typescript": "5.1.6",
+        "@amzn/react-native-w3cmedia": "~2.1.6"
+    },
+    "peerDependencies": {
+        "react": "*",
+        "react-native": "*",
+        "@amzn/react-native-w3cmedia": "*"
+    },
+    "scripts": {
+        "lint": "yarn eslint .",
+        "build": "yarn tsc",
+        "prepare": "yarn build",
+        "docs": "yarn --cwd docs build",
+        "release": "release-it",
+        "test": "echo no test available"
+    },
+    "files": [
+        "src",
+        "lib",
+        "!**/*.tsbuildinfo",
+        "!docs",
+        "!examples"
+    ]
+}

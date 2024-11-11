@@ -1,0 +1,52 @@
+#
+# Copyright (c) 2022 Amazon.com, Inc. or its affiliates.  All rights reserved.
+#
+# PROPRIETARY/CONFIDENTIAL.  USE IS SUBJECT TO LICENSE TERMS.
+#
+schema-version = 1
+
+[package]
+title = "Basic UI React Native Application"
+version = "0.1.0"
+id = "com.anonymous.rnvexample"
+
+[components]
+[[components.interactive]]
+id = "com.anonymous.rnvexample.main"
+runtime-module = "/com.amazon.kepler.keplerscript.runtime.loader_2@IKeplerScript_2_0"
+launch-type = "singleton"
+
+[wants]
+[[wants.service]]
+id = "com.amazon.mediametrics.service" # Required for metrics service
+
+[[wants.service]]
+id = "com.amazon.media.server"
+
+[[wants.service]]
+id = "com.amazon.gipc.uuid.*"
+
+[[wants.service]]
+id = "com.amazon.media.playersession.service"
+
+[[wants.privilege]]
+id = "com.amazon.devconf.privilege.accessibility" # Required for captions
+
+[[wants.service]]
+id = "com.amazon.mediabuffer.service"
+
+[[wants.service]]
+id = "com.amazon.mediatransform.service"
+
+[[wants.service]]
+id = "com.amazon.audio.stream"
+
+[[wants.service]]
+id = "com.amazon.audio.control"
+
+[[wants.service]]
+id = "com.amazon.audio.system"
+
+[offers]
+[[offers.service]]
+id = "com.amazon.gipc.uuid.*"
