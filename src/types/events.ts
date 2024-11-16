@@ -47,7 +47,7 @@ export type OnLoadData = Readonly<{
     /**
      * iOS only supports VTT, Android supports all 3
      */
-    type?: WithDefault<'srt' | 'ttml' | 'vtt', 'srt'>;
+    type?: WithDefault<string | 'ttml' | 'vtt', 'srt'>;
     selected?: boolean;
   }[];
   videoTracks: {
