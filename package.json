@@ -34,12 +34,10 @@
         "release-it": "^16.2.1",
         "typescript": "5.1.6"
     },
-    "dependencies": {
-      "@amzn/react-native-w3cmedia": "*"
-    },
     "peerDependencies": {
         "react": "*",
-        "react-native": "*"
+        "react-native": "*",
+        "@amzn/react-native-w3cmedia": "*"
     },
     "scripts": {
         "lint": "yarn eslint .",
