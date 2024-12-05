@@ -1,24 +1,8 @@
-import type {WithDefault} from 'react-native/Libraries/Types/CodegenTypes';
 import type {
-  OnAudioFocusChangedData,
-  OnAudioTracksData,
-  OnBandwidthUpdateData,
-  OnBufferData,
-  OnControlsVisibilityChange,
-  OnExternalPlaybackChangeData,
-  OnLoadStartData,
-  OnPictureInPictureStatusChangedData,
-  OnPlaybackRateChangeData,
-  OnPlaybackStateChangedData,
-  OnProgressData,
-  OnSeekData,
-  OnTextTrackDataChangedData,
-  OnTimedMetadataData,
-  OnVideoAspectRatioData,
-  OnVideoErrorData,
-  OnVideoTracksData,
-  OnVolumeChangeData,
-} from '../specs/VideoNativeComponent';
+  Float,
+  Int32,
+  WithDefault,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 export type AudioTrack = OnAudioTracksData['audioTracks'][number];
 export type TextTrack = OnTextTracksData['textTracks'][number];
@@ -230,6 +214,123 @@ export type OnReceiveAdEventData = Readonly<{
     | 'VOLUME_MUTED',
     'AD_BREAK_ENDED'
   >;
+}>;
+
+export type OnLoadStartData = Readonly<{
+  isNetwork: boolean;
+  type: string;
+  uri: string;
+}>;
+
+export type OnVideoAspectRatioData = Readonly<{
+  width: Float;
+  height: Float;
+}>;
+
+export type OnBufferData = Readonly<{isBuffering: boolean}>;
+
+export type OnProgressData = Readonly<{
+  currentTime: Float;
+  playableDuration: Float;
+  seekableDuration: Float;
+}>;
+
+export type OnBandwidthUpdateData = Readonly<{
+  bitrate: Int32;
+  width?: Float;
+  height?: Float;
+  trackId?: Int32;
+}>;
+
+export type OnSeekData = Readonly<{
+  currentTime: Float;
+  seekTime: Float;
+}>;
+
+export type OnPlaybackStateChangedData = Readonly<{
+  isPlaying: boolean;
+  isSeeking: boolean;
+}>;
+
+export type OnTimedMetadataData = Readonly<{
+  metadata: {
+    value?: string;
+    identifier: string;
+  }[];
+}>;
+
+export type OnAudioTracksData = Readonly<{
+  audioTracks: {
+    index: Int32;
+    title?: string;
+    language?: string;
+    bitrate?: Float;
+    type?: string;
+    selected?: boolean;
+  }[];
+}>;
+
+export type OnTextTrackDataChangedData = Readonly<{
+  subtitleTracks: string;
+}>;
+
+export type OnVideoTracksData = Readonly<{
+  videoTracks: {
+    index: Int32;
+    tracksId?: string;
+    codecs?: string;
+    width?: Float;
+    height?: Float;
+    bitrate?: Float;
+    selected?: boolean;
+  }[];
+}>;
+
+export type OnPlaybackRateChangeData = Readonly<{
+  playbackRate: Float;
+}>;
+
+export type OnVolumeChangeData = Readonly<{
+  volume: Float;
+}>;
+
+export type OnExternalPlaybackChangeData = Readonly<{
+  isExternalPlaybackActive: boolean;
+}>;
+
+export type OnGetLicenseData = Readonly<{
+  licenseUrl: string;
+  loadedLicenseUrl: string;
+  contentId: string;
+  spcBase64: string;
+}>;
+
+export type OnPictureInPictureStatusChangedData = Readonly<{
+  isActive: boolean;
+}>;
+
+export type OnVideoErrorData = Readonly<{
+  error: Readonly<{
+    errorString?: string; // android | web
+    errorException?: string; // android
+    errorStackTrace?: string; // android
+    errorCode?: string; // android
+    error?: string; // ios
+    code?: Int32; // ios | web
+    localizedDescription?: string; // ios
+    localizedFailureReason?: string; // ios
+    localizedRecoverySuggestion?: string; // ios
+    domain?: string; // ios
+  }>;
+  target?: Int32; // ios
+}>;
+
+export type OnAudioFocusChangedData = Readonly<{
+  hasAudioFocus: boolean;
+}>;
+
+export type OnControlsVisibilityChange = Readonly<{
+  isVisible: boolean;
 }>;
 
 export interface ReactVideoEvents {

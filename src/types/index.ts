@@ -7,4 +7,3 @@ export {default as ResizeMode} from './ResizeMode';
 export {default as TextTrackType} from './TextTrackType';
 export {default as ViewType} from './ViewType';
 export * from './video';
-export * from '../specs/VideoNativeComponent';
