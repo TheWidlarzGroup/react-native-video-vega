@@ -1,5 +1,4 @@
 import React, {
-  //  ElementRef,
   forwardRef,
   useCallback,
   useEffect,
@@ -10,10 +9,10 @@ import React, {
 } from 'react';
 import {
   AudioTrack,
-  // EnumValues,
+  EnumValues,
   ReactVideoProps,
   ReactVideoSource,
-  // ResizeMode,
+  ResizeMode,
   TextTrack,
   VideoTrack,
 } from './types';
@@ -27,7 +26,6 @@ import {
   ViewStyle,
 } from 'react-native';
 import {
-  //  Video as KVideo,
   AudioTrack as KAudioTrack,
   VideoTrack as KVideoTrack,
   TextTrack as KTextTrack,
@@ -35,6 +33,8 @@ import {
   KeplerVideoView,
 } from '@amzn/react-native-w3cmedia';
 import {resolveAssetSourceForVideo} from './utils';
+import {useHTMLMediaElementEvent} from './events/media-element';
+import {useTrackListEvent} from './events/media-tracks';
 
 export interface VideoRef {
   seek: (time: number, tolerance?: number) => void;
@@ -51,20 +51,20 @@ export interface VideoRef {
   getCurrentPosition: () => Promise<number>;
 }
 
-// const resizeModeToScalingMode = (
-//   resizeMode: EnumValues<ResizeMode> | undefined,
-// ) => {
-//   switch (resizeMode) {
-//     case 'contain':
-//       return 'fit';
-//     case 'cover':
-//       return 'fill';
-//     case 'stretch':
-//       return 'strech';
-//     default:
-//       return 'none';
-//   }
-// };
+const resizeModeToScalingMode = (
+  resizeMode: EnumValues<ResizeMode> | undefined,
+) => {
+  switch (resizeMode) {
+    case 'contain':
+      return 'fit';
+    case 'cover':
+      return 'fill';
+    case 'stretch':
+      return 'strech';
+    default:
+      return 'none';
+  }
+};
 
 const Video = forwardRef<VideoRef, ReactVideoProps>(
   (
@@ -79,25 +79,25 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       selectedVideoTrack,
       selectedAudioTrack,
       selectedTextTrack,
-      // onLoadStart,
-      // onLoad,
-      // onError,
-      // onProgress,
-      // onSeek,
-      // onEnd,
-      // onReadyForDisplay,
+      onLoadStart,
+      onLoad,
+      onError,
+      onProgress,
+      onSeek,
+      onEnd,
+      onReadyForDisplay,
       onPlaybackRateChange,
       onVolumeChange,
-      // onPlaybackStateChanged,
+      onPlaybackStateChanged,
       onAudioTracks,
       onTextTracks,
       onVideoTracks,
-      // ...props
+      controls,
     },
     ref,
   ) => {
     const videoPlayer = useRef<VideoPlayer | null>(null);
-    // const isSeeking = useRef(false);
+    const isSeeking = useRef(false);
 
     const _renderLoader = useMemo(
       () =>
@@ -121,7 +121,12 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       return !!poster?.source;
     }, [poster, _renderLoader]);
 
-    const [showPoster, _] = useState(hasPoster);
+    const scalingmode = useMemo(
+      () => resizeModeToScalingMode(resizeMode),
+      [resizeMode],
+    );
+
+    const [showPoster, setShowPoster] = useState(hasPoster);
     const [useKeplerVideoView, setUseKeplerVideoView] = useState(false);
 
     const setSource = useCallback(
@@ -173,7 +178,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
     }, [setSource, source]);
 
     // Media Tracks
-
     useEffect(() => {
       if (!videoPlayer.current) {
         return;
@@ -337,159 +341,166 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       [setFullScreen],
     );
 
-    // const onVideoLoadStart = useCallback(() => {
-    //   if (!videoPlayer.current) {
-    //     return;
-    //   }
+    const _onReadyForDisplay = useCallback(() => {
+      hasPoster && setShowPoster(false);
+      onReadyForDisplay?.();
+    }, [hasPoster, onReadyForDisplay]);
 
-    //   onLoadStart?.({
-    //     isNetwork: !!(
-    //       videoPlayer.current.src &&
-    //       videoPlayer.current.src.match(/^(rtp|rtsp|http|https):/)
-    //     ),
-    //     type: '',
-    //     uri: videoPlayer.current.src,
-    //   });
-    // }, [onLoadStart]);
+    const onVideoLoadStart = useCallback(() => {
+      if (!videoPlayer.current) {
+        return;
+      }
 
-    // const onVideoLoad = useCallback(() => {
-    //   if (!videoPlayer.current) {
-    //     return;
-    //   }
+      onLoadStart?.({
+        isNetwork: !!(
+          videoPlayer.current.src &&
+          videoPlayer.current.src.match(/^(rtp|rtsp|http|https):/)
+        ),
+        type: '',
+        uri: videoPlayer.current.src,
+      });
+    }, [onLoadStart]);
 
-    //   const getAudioTracks: () => Array<AudioTrack> = () => {
-    //     if (!videoPlayer.current) {
-    //       return [];
-    //     }
+    const onVideoLoad = useCallback(() => {
+      _onReadyForDisplay();
 
-    //     const audioTracks: Array<AudioTrack> = [];
-    //     for (let i = 0; i < videoPlayer.current.audioTracks.length; i++) {
-    //       // @ts-expect-error - TS does not extends array
-    //       const track = videoPlayer.current.audioTracks[i] as KAudioTrack;
-    //       audioTracks.push({
-    //         index: i,
-    //         title: track.label,
-    //         bitrate: undefined,
-    //         language: track.language,
-    //         selected: track.enabled,
-    //         type: 'index',
-    //       } satisfies AudioTrack);
-    //     }
+      if (!videoPlayer.current) {
+        return;
+      }
 
-    //     return audioTracks;
-    //   };
+      const getAudioTracks: () => Array<AudioTrack> = () => {
+        if (!videoPlayer.current) {
+          return [];
+        }
 
-    //   const getVideoTracks = () => {
-    //     if (!videoPlayer.current) {
-    //       return [];
-    //     }
+        const audioTracks: Array<AudioTrack> = [];
+        for (let i = 0; i < videoPlayer.current.audioTracks.length; i++) {
+          // @ts-expect-error - TS does not extends array
+          const track = videoPlayer.current.audioTracks[i] as KAudioTrack;
+          audioTracks.push({
+            index: i,
+            title: track.label,
+            bitrate: undefined,
+            language: track.language,
+            selected: track.enabled,
+            type: 'index',
+          } satisfies AudioTrack);
+        }
 
-    //     const videoTracks: Array<VideoTrack> = [];
-    //     for (let i = 0; i < videoPlayer.current.videoTracks.length; i++) {
-    //       // @ts-expect-error - TS does not extends array
-    //       const track = videoPlayer.current.videoTracks[i] as KVideoTrack;
-    //       videoTracks.push({
-    //         index: i,
-    //         height: undefined,
-    //         width: undefined,
-    //         bitrate: undefined,
-    //         selected: track.selected,
-    //         codecs: undefined,
-    //       });
-    //     }
+        return audioTracks;
+      };
 
-    //     return videoTracks;
-    //   };
+      const getVideoTracks = () => {
+        if (!videoPlayer.current) {
+          return [];
+        }
 
-    //   const getTextTracks = () => {
-    //     if (!videoPlayer.current) {
-    //       return [];
-    //     }
+        const videoTracks: Array<VideoTrack> = [];
+        for (let i = 0; i < videoPlayer.current.videoTracks.length; i++) {
+          // @ts-expect-error - TS does not extends array
+          const track = videoPlayer.current.videoTracks[i] as KVideoTrack;
+          videoTracks.push({
+            index: i,
+            height: undefined,
+            width: undefined,
+            bitrate: undefined,
+            selected: track.selected,
+            codecs: undefined,
+          });
+        }
 
-    //     const texTracks: Array<TextTrack> = [];
-    //     for (let i = 0; i < videoPlayer.current.textTracks.length; i++) {
-    //       // @ts-expect-error - TS does not extends array
-    //       const track = videoPlayer.current.textTracks[i] as KTextTrack;
-    //       texTracks.push({
-    //         index: i,
-    //         title: track.label,
-    //         language: track.language,
-    //         type: undefined,
-    //         selected: track.mode !== 'disabled',
-    //       });
-    //     }
+        return videoTracks;
+      };
 
-    //     return texTracks;
-    //   };
+      const getTextTracks = () => {
+        if (!videoPlayer.current) {
+          return [];
+        }
 
-    //   onLoad?.({
-    //     currentTime: videoPlayer.current.currentTime,
-    //     duration: videoPlayer.current.duration,
-    //     naturalSize: {
-    //       width: videoPlayer.current.videoWidth,
-    //       height: videoPlayer.current.videoHeight,
-    //       orientation:
-    //         videoPlayer.current.videoWidth > videoPlayer.current.videoHeight
-    //           ? 'landscape'
-    //           : 'portrait',
-    //     },
-    //     audioTracks: getAudioTracks(),
-    //     textTracks: getTextTracks(),
-    //     videoTracks: getVideoTracks(),
-    //   });
-    // }, [onLoad]);
+        const texTracks: Array<TextTrack> = [];
+        for (let i = 0; i < videoPlayer.current.textTracks.length; i++) {
+          // @ts-expect-error - TS does not extends array
+          const track = videoPlayer.current.textTracks[i] as KTextTrack;
+          texTracks.push({
+            index: i,
+            title: track.label,
+            language: track.language,
+            type: undefined,
+            selected: track.mode !== 'disabled',
+          });
+        }
 
-    // const onVideoError = useCallback(() => {
-    //   if (!videoPlayer.current) {
-    //     return;
-    //   }
+        return texTracks;
+      };
 
-    //   onError?.({
-    //     error: {
-    //       code: videoPlayer.current.error?.code ?? -1,
-    //       domain: videoPlayer.current.error?.message ?? 'unknown',
-    //       error: videoPlayer.current.error?.message ?? 'unknown',
-    //     },
-    //   });
-    // }, [onError]);
+      onLoad?.({
+        currentTime: videoPlayer.current.currentTime,
+        duration: videoPlayer.current.duration,
+        naturalSize: {
+          width: videoPlayer.current.videoWidth,
+          height: videoPlayer.current.videoHeight,
+          orientation:
+            videoPlayer.current.videoWidth > videoPlayer.current.videoHeight
+              ? 'landscape'
+              : 'portrait',
+        },
+        audioTracks: getAudioTracks(),
+        textTracks: getTextTracks(),
+        videoTracks: getVideoTracks(),
+      });
+    }, [_onReadyForDisplay, onLoad]);
 
-    // const onVideoProgress = useCallback(() => {
-    //   if (!videoPlayer.current) {
-    //     return;
-    //   }
+    const onVideoError = useCallback(() => {
+      if (!videoPlayer.current) {
+        return;
+      }
 
-    //   onProgress?.({
-    //     currentTime: videoPlayer.current.currentTime,
-    //     playableDuration: videoPlayer.current.duration,
-    //     seekableDuration: videoPlayer.current.buffered.end(0),
-    //   });
-    // }, [onProgress]);
+      onError?.({
+        error: {
+          code: videoPlayer.current.error?.code ?? -1,
+          domain: videoPlayer.current.error?.message ?? 'unknown',
+          error: videoPlayer.current.error?.message ?? 'unknown',
+        },
+      });
+    }, [onError]);
 
-    // const onVideoSeek = useCallback(() => {
-    //   if (!videoPlayer.current) {
-    //     return;
-    //   }
+    const onVideoProgress = useCallback(() => {
+      if (!videoPlayer.current) {
+        return;
+      }
 
-    //   onSeek?.({
-    //     currentTime: videoPlayer.current.currentTime,
-    //     seekTime: videoPlayer.current.currentTime,
-    //   });
-    // }, [onSeek]);
+      onProgress?.({
+        currentTime: videoPlayer.current.currentTime,
+        playableDuration: videoPlayer.current.duration,
+        seekableDuration: videoPlayer.current.buffered.end(0),
+      });
+    }, [onProgress]);
 
-    // const onVideoPlaybackStateChanged = useCallback(() => {
-    //   if (!videoPlayer.current) {
-    //     return;
-    //   }
+    const onVideoSeek = useCallback(() => {
+      if (!videoPlayer.current) {
+        return;
+      }
 
-    //   onPlaybackStateChanged?.({
-    //     isPlaying: !videoPlayer.current.paused,
-    //     isSeeking: isSeeking.current,
-    //   });
-    // }, [onPlaybackStateChanged]);
+      onSeek?.({
+        currentTime: videoPlayer.current.currentTime,
+        seekTime: videoPlayer.current.currentTime,
+      });
+    }, [onSeek]);
 
-    // const onVideoEnd = useCallback(() => {
-    //   onEnd?.();
-    // }, [onEnd]);
+    const onVideoPlaybackStateChanged = useCallback(() => {
+      if (!videoPlayer.current) {
+        return;
+      }
+
+      onPlaybackStateChanged?.({
+        isPlaying: !videoPlayer.current.paused,
+        isSeeking: isSeeking.current,
+      });
+    }, [onPlaybackStateChanged]);
+
+    const onVideoEnd = useCallback(() => {
+      onEnd?.();
+    }, [onEnd]);
 
     const _onAudioTracks = useCallback(() => {
       if (!videoPlayer.current) {
@@ -575,11 +586,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         volume,
       });
     }, [onVolumeChange]);
-
-    // const _onReadyForDisplay = useCallback(() => {
-    //   hasPoster && setShowPoster(false);
-    //   onReadyForDisplay?.();
-    // }, [setShowPoster, hasPoster, onReadyForDisplay]);
 
     useImperativeHandle(
       ref,
@@ -685,66 +691,67 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       [showPoster],
     );
 
-    // Add listeners
-    useEffect(() => {
-      const vp = videoPlayer.current;
+    useHTMLMediaElementEvent(videoPlayer, {
+      loadstart: onVideoLoadStart,
+      loadeddata: onVideoLoad,
+      error: onVideoError,
+      progress: onVideoProgress,
+      seeked: onVideoSeek,
+      play: onVideoPlaybackStateChanged,
+      pause: onVideoPlaybackStateChanged,
+      playing: onVideoPlaybackStateChanged,
+      stalled: onVideoPlaybackStateChanged,
+      suspend: onVideoPlaybackStateChanged,
+      waiting: onVideoPlaybackStateChanged,
+      timeupdate: onVideoProgress,
+      ratechange: _onPlaybackRateChange,
+      ended: onVideoEnd,
+      volumechange: _onVolumeChange,
+    });
 
-      if (!vp) {
-        return;
-      }
+    // Audio Tracks Events
+    useTrackListEvent(
+      {current: videoPlayer.current?.audioTracks || null},
+      {
+        change: _onAudioTracks,
+      },
+    );
 
-      vp.audioTracks.addEventListener('onchange', _onAudioTracks);
+    // Video Tracks Events
+    useTrackListEvent(
+      {current: videoPlayer.current?.videoTracks || null},
+      {
+        change: _onVideoTracks,
+      },
+    );
 
-      vp.textTracks.addEventListener('onchange', _onTextTracks);
-
-      vp.videoTracks.addEventListener('onchange', _onVideoTracks);
-
-      vp.addEventListener('volumechange', _onVolumeChange);
-
-      vp.addEventListener('ratechange', _onPlaybackRateChange);
-
-      return () => {
-        vp?.audioTracks.removeEventListener('onchange', _onAudioTracks);
-        vp?.textTracks.removeEventListener('onchange', _onTextTracks);
-        vp?.videoTracks.removeEventListener('onchange', _onVideoTracks);
-        vp?.removeEventListener('volumechange', _onVolumeChange);
-      };
-    }, [
-      _onAudioTracks,
-      _onPlaybackRateChange,
-      _onTextTracks,
-      _onVideoTracks,
-      _onVolumeChange,
-    ]);
+    // Text Tracks Events
+    useTrackListEvent(
+      {current: videoPlayer.current?.textTracks || null},
+      {
+        change: _onTextTracks,
+        addtrack: (event) => {
+          __DEV__ && console.log('[RNV]: Text track added:', event.track);
+        },
+        removetrack: (event) => {
+          console.log('[RNV]: Text track removed:', event.track);
+        },
+      },
+    );
 
     return (
       <View style={style}>
-        {/* <KVideo
-          ref={videoPlayer}
-          style={_style}
-          controls={props.controls}
-          onLoadStart={onVideoLoadStart}
-          onLoadedData={onVideoLoad}
-          onError={onVideoError}
-          onProgress={onVideoProgress}
-          onSeeking={() => {
-            isSeeking.current = true;
-          }}
-          onSeeked={onVideoSeek}
-          onCanPlay={_onReadyForDisplay}
-          onPlay={onVideoPlaybackStateChanged}
-          onPause={onVideoPlaybackStateChanged}
-          onEnded={onVideoEnd}
-          scalingmode={resizeModeToScalingMode(resizeMode)}
-        /> */}
         {useKeplerVideoView ? (
           <KeplerVideoView
             style={_style}
-            showControls={true}
+            showControls={controls}
+            showCaptions={true}
             videoPlayer={videoPlayer.current as VideoPlayer}
-            scalingmode="fill"
+            scalingmode={scalingmode}
           />
-        ) : null}
+        ) : (
+          <View style={_style} />
+        )}
         {_renderPoster()}
       </View>
     );
