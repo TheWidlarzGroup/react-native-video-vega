@@ -1,12 +1,38 @@
-# react-native-video
-🎬 `<Video>` component for React Native
+# react-native-video-amazon
+🎬 `<Video>` component for React Native (Fork for Kepler)
 
 ## Documentation
 documentation is available at [docs.thewidlarzgroup.com/react-native-video/](https://docs.thewidlarzgroup.com/react-native-video/)
+> [!NOTE]
+> Documentation is made for react-native-video, but is should cover all the features of react-native-video-amazon
 
-## Examples
-You can find several examples demonstrating the usage of react-native-video [here](https://github.com/TheWidlarzGroup/react-native-video/tree/master/examples). <br />
-These include a [basic](https://github.com/TheWidlarzGroup/react-native-video/blob/master/examples/bare/src/BasicExample.tsx) usage and [DRM example](https://github.com/TheWidlarzGroup/react-native-video/blob/master/examples/bare/src/DRMExample.tsx) (with a [free DRM stream](https://www.thewidlarzgroup.com/services/free-drm-token-generator-for-video?utm_source=drm&utm_medium=code)).
+## Example
+To run example you need to have setup Kepler SDK
+
+To run example follow these steps:
+
+> [!CAUTION]
+> Use `npm` to install dependencies in the root directory. Other package managers may not work correctly.
+
+```bash
+# Install dependencies in the root directory
+npm install --force
+
+# Go to example directory
+cd example
+npm install
+
+# build the project
+npm run build:app
+
+# Run Simulator & start metro bundler
+kepler device simulator start
+kepler device start-port-forwarding --device Simulator -p 8081 --forward false
+npm start
+
+# Run the app
+kepler run-kepler "./build/vega-tv2023-aarch64-debug/keplerrnvideoexample_aarch64.vpkg" "com.anonymous.rnvexample.main" -s
+```
 
 ## Usage
 
