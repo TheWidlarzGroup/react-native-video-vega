@@ -293,6 +293,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const seek = useCallback(async (time: number, _?: number) => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -301,6 +302,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const pause = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -309,6 +311,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const resume = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -317,6 +320,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const setVolume = useCallback((volume: number) => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -348,6 +352,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const onVideoLoadStart = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -362,14 +367,17 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
     }, [onLoadStart]);
 
     const onVideoLoad = useCallback(() => {
+      console.log('onVideoLoad');
       _onReadyForDisplay();
 
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
       const getAudioTracks: () => Array<AudioTrack> = () => {
         if (!videoPlayer.current) {
+          console.warn('[RNV] No video player');
           return [];
         }
 
@@ -392,6 +400,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
       const getVideoTracks = () => {
         if (!videoPlayer.current) {
+          console.warn('[RNV] No video player');
           return [];
         }
 
@@ -414,6 +423,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
       const getTextTracks = () => {
         if (!videoPlayer.current) {
+          console.warn('[RNV] No video player');
           return [];
         }
 
@@ -452,6 +462,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const onVideoError = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -466,6 +477,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const onVideoProgress = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -478,6 +490,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const onVideoSeek = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -489,6 +502,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const onVideoPlaybackStateChanged = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -504,6 +518,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const _onAudioTracks = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -528,6 +543,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const _onTextTracks = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -551,6 +567,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const _onVideoTracks = useCallback(() => {
       if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
         return;
       }
 
@@ -685,7 +702,8 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const _style: StyleProp<ViewStyle> = useMemo(
       () => ({
-        ...StyleSheet.absoluteFillObject,
+        width: '100%',
+        height: '100%',
         ...(showPoster ? {display: 'none'} : {}),
       }),
       [showPoster],

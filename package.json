@@ -33,7 +33,7 @@
         "react-native-windows": "^0.61.0-0",
         "release-it": "^16.2.1",
         "typescript": "5.1.6",
-        "@amzn/react-native-w3cmedia": "latest"
+        "@amzn/react-native-w3cmedia": "~2.1.6"
     },
     "peerDependencies": {
         "react": "*",

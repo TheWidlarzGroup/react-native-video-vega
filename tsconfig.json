@@ -31,5 +31,5 @@
     "verbatimModuleSyntax": false,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": ["examples", "lib", "docs"]
+  "exclude": ["lib", "example"]
 }
