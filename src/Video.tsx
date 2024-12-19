@@ -19,6 +19,7 @@ import {
 import {
   Image,
   ImageResizeMode,
+  ImageSourcePropType,
   ImageStyle,
   StyleProp,
   StyleSheet,
@@ -686,7 +687,11 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       return (
         <Image
           {...(typeof poster === 'string' ? {} : poster)}
-          source={typeof poster === 'string' ? {uri: poster} : poster?.source}
+          source={
+            typeof poster === 'string'
+              ? {uri: poster}
+              : (poster?.source as ImageSourcePropType)
+          }
           style={posterStyle}
         />
       );
