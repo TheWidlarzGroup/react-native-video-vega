@@ -1,15 +1,14 @@
 {
-    "name": "react-native-video",
-    "version": "6.7.0",
-    "description": "A <Video /> element for react-native",
+    "name": "react-native-video-vega",
+    "version": "0.1.0",
+    "description": "A <Video /> element for React Native Vega OS (fork of react-native-video)",
     "main": "lib/index",
     "source": "src/index",
     "react-native": "src/index",
     "author": "Community Contributors",
-    "homepage": "https://docs.thewidlarzgroup.com/react-native-video/",
     "repository": {
         "type": "git",
-        "url": "git@github.com:TheWidlarzGroup/react-native-video-amazon.git"
+        "url": "git@github.com:TheWidlarzGroup/react-native-video-vega.git"
     },
     "resolutions": {
         "@types/react": "~18.0.0"
