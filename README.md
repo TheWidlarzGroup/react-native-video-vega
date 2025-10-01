@@ -1,13 +1,13 @@
-# react-native-video-amazon
-🎬 `<Video>` component for React Native (Fork for Kepler)
+# react-native-video-vega
+🎬 `<Video>` component for React Native Vega OS
 
 ## Documentation
 documentation is available at [docs.thewidlarzgroup.com/react-native-video/](https://docs.thewidlarzgroup.com/react-native-video/)
 > [!NOTE]
-> Documentation is made for react-native-video, but is should cover all the features of react-native-video-amazon
+> Documentation is made for react-native-video, but is should cover all the features of react-native-video-vega
 
 ## Example
-To run example you need to have setup Kepler SDK
+To run example you need to have setup [React Native for Vega](https://developer.amazon.com/docs/vega/0.21/vega-develop.html)
 
 To run example follow these steps:
 
@@ -81,7 +81,7 @@ We have an discord server where you can ask questions and get help. [Join the di
 
 ## Enterprise Support
 <p>
-  📱 <i>react-native-video</i> is provided <i>as it is</i>. For enterprise support or other business inquiries, <a href="https://www.thewidlarzgroup.com/?utm_source=rnv&utm_medium=readme#Contact">please contact us 🤝</a>. We can help you with the integration, customization and maintenance. We are providing both free and commercial support for this project. let's build something awesome together! 🚀
+  📱 <i>react-native-video</i> is provided <i>as it is</i>. For enterprise support or other business inquiries, <a href="https://www.thewidlarzgroup.com/?utm_source=rnvvega&utm_medium=readme#Contact">please contact us 🤝</a>. We can help you with the integration, customization and maintenance. We are providing both free and commercial support for this project. let's build something awesome together! 🚀
 </p>
 <a href="https://www.thewidlarzgroup.com/?utm_source=rnv&utm_medium=readme">
   <picture>
