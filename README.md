@@ -1,12 +1,16 @@
 # react-native-video-vega
+
 🎬 `<Video>` component for React Native Vega OS
 
 ## Documentation
+
 documentation is available at [docs.thewidlarzgroup.com/react-native-video/](https://docs.thewidlarzgroup.com/react-native-video/)
+
 > [!NOTE]
 > Documentation is made for react-native-video, but is should cover all the features of react-native-video-vega
 
 ## Example
+
 To run example you need to have setup [React Native for Vega](https://developer.amazon.com/docs/vega/0.21/vega-develop.html)
 
 To run example follow these steps:
@@ -23,15 +27,15 @@ cd example
 npm install
 
 # build the project
-npm run build:app
+npm run build:debug
 
 # Run Simulator & start metro bundler
-kepler device simulator start
-kepler device start-port-forwarding --device Simulator -p 8081 --forward false
+kepler virtual-device start
 npm start
+kepler device start-port-forwarding --device VirtualDevice -p 8081 --forward false
 
 # Run the app
-kepler run-kepler "./build/vega-tv2023-aarch64-debug/keplerrnvideoexample_aarch64.vpkg" "com.anonymous.rnvexample.main" -s
+kepler run-kepler build/aarch64-debug/keplerrnvideoexample_aarch64.vpkg com.anonymous.rnvexample.main -d VirtualDevice
 ```
 
 ## Usage
@@ -39,7 +43,7 @@ kepler run-kepler "./build/vega-tv2023-aarch64-debug/keplerrnvideoexample_aarch6
 ```javascript
 // Load the module
 
-import Video, {VideoRef} from 'react-native-video';
+import Video, {VideoRef} from 'react-native-video-vega';
 
 // Within your render function, assuming you have a file called
 // "background.mp4" in your project. You can include multiple videos
@@ -77,11 +81,13 @@ var styles = StyleSheet.create({
 ```
 
 ## Community support
+
 We have an discord server where you can ask questions and get help. [Join the discord server](https://discord.gg/WXuM4Tgb9X)
 
 ## Enterprise Support
+
 <p>
-  📱 <i>react-native-video</i> is provided <i>as it is</i>. For enterprise support or other business inquiries, <a href="https://www.thewidlarzgroup.com/?utm_source=rnvvega&utm_medium=readme#Contact">please contact us 🤝</a>. We can help you with the integration, customization and maintenance. We are providing both free and commercial support for this project. let's build something awesome together! 🚀
+  📱 <i>react-native-video-vega</i> is provided <i>as it is</i>. For enterprise support or other business inquiries, <a href="https://www.thewidlarzgroup.com/?utm_source=rnvvega&utm_medium=readme#Contact">please contact us 🤝</a>. We can help you with the integration, customization and maintenance. We are providing both free and commercial support for this project. let's build something awesome together! 🚀
 </p>
 <a href="https://www.thewidlarzgroup.com/?utm_source=rnv&utm_medium=readme">
   <picture>

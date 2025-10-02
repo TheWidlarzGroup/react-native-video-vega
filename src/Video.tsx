@@ -31,7 +31,7 @@ import {
   TextTrack as KTextTrack,
   VideoPlayer,
   KeplerVideoView,
-} from '@amzn/react-native-w3cmedia';
+} from '@amazon-devices/react-native-w3cmedia';
 import {resolveAssetSourceForVideo} from './utils';
 import {useHTMLMediaElementEvent} from './events/media-element';
 import {useTrackListEvent} from './events/media-tracks';

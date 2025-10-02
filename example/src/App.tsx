@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Video, {VideoRef} from 'react-native-video';
+import Video, {VideoRef} from 'react-native-video-vega';
 
 // mp4 video file
 const VIDEO_URL = 'https://www.w3schools.com/html/mov_bbb.mp4';

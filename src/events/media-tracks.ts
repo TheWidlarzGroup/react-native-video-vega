@@ -6,7 +6,7 @@ import {
   TextTrackList,
   TrackEvent,
   VideoTrackList,
-} from '@amzn/react-native-w3cmedia';
+} from '@amazon-devices/react-native-w3cmedia';
 import {useEffect, RefObject} from 'react';
 
 type TrackListEvents = {

@@ -1,4 +1,7 @@
-import {EventListener, HTMLMediaElement} from '@amzn/react-native-w3cmedia';
+import {
+  EventListener,
+  HTMLMediaElement,
+} from '@amazon-devices/react-native-w3cmedia';
 import {useEffect, RefObject} from 'react';
 
 type HTMLMediaElementEvents = {
