@@ -14,6 +14,8 @@ const pak = require('../package.json');
 const root = path.resolve(__dirname, '..');
 const modules = Object.keys({...pak.peerDependencies});
 
+const defaultConfig = getDefaultConfig(__dirname);
+
 /**
 + * Metro configuration
 + * https://facebook.github.io/metro/docs/configuration
@@ -41,6 +43,7 @@ const config = {
       return acc;
     }, {}),
   },
+  platforms: [...(defaultConfig.resolver.platforms || []), 'kepler'],
   transformer: {
     getTransformOptions: async () => ({
       transform: {
@@ -51,4 +54,4 @@ const config = {
   },
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = mergeConfig(defaultConfig, config);
