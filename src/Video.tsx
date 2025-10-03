@@ -94,6 +94,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       onVideoTracks,
       onBuffer,
       controls,
+      paused,
     },
     ref,
   ) => {
@@ -292,15 +293,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     // ------------
 
-    const seek = useCallback(async (time: number, _?: number) => {
-      if (!videoPlayer.current) {
-        console.warn('[RNV] No video player');
-        return;
-      }
-
-      videoPlayer.current.currentTime = time;
-    }, []);
-
     const pause = useCallback(() => {
       if (!videoPlayer.current) {
         console.warn('[RNV] No video player');
@@ -317,6 +309,27 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       }
 
       videoPlayer.current.play();
+    }, []);
+
+    const handlePause = useCallback(() => {
+      if (paused) {
+        pause();
+      } else {
+        resume();
+      }
+    }, [pause, paused, resume]);
+
+    useEffect(() => {
+      handlePause();
+    }, [handlePause, paused]);
+
+    const seek = useCallback(async (time: number, _?: number) => {
+      if (!videoPlayer.current) {
+        console.warn('[RNV] No video player');
+        return;
+      }
+
+      videoPlayer.current.currentTime = time;
     }, []);
 
     const setVolume = useCallback((volume: number) => {
@@ -445,6 +458,9 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         return texTracks;
       };
 
+      // Apply paused state after video is loaded and ready
+      setTimeout(() => handlePause(), 0);
+
       onLoad?.({
         currentTime: videoPlayer.current.currentTime,
         duration: videoPlayer.current.duration,
@@ -460,7 +476,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         textTracks: getTextTracks(),
         videoTracks: getVideoTracks(),
       });
-    }, [_onReadyForDisplay, onLoad, onBuffer]);
+    }, [_onReadyForDisplay, onBuffer, handlePause, onLoad]);
 
     const onVideoError = useCallback(() => {
       if (!videoPlayer.current) {
