@@ -92,6 +92,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       onAudioTracks,
       onTextTracks,
       onVideoTracks,
+      onBuffer,
       controls,
     },
     ref,
@@ -369,6 +370,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
     const onVideoLoad = useCallback(() => {
       console.log('onVideoLoad');
       _onReadyForDisplay();
+      onBuffer?.({isBuffering: false});
 
       if (!videoPlayer.current) {
         console.warn('[RNV] No video player');
@@ -458,7 +460,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         textTracks: getTextTracks(),
         videoTracks: getVideoTracks(),
       });
-    }, [_onReadyForDisplay, onLoad]);
+    }, [_onReadyForDisplay, onLoad, onBuffer]);
 
     const onVideoError = useCallback(() => {
       if (!videoPlayer.current) {
@@ -511,6 +513,31 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         isSeeking: isSeeking.current,
       });
     }, [onPlaybackStateChanged]);
+
+    const onVideoPlay = useCallback(() => {
+      onVideoPlaybackStateChanged();
+      onBuffer?.({isBuffering: false});
+    }, [onVideoPlaybackStateChanged, onBuffer]);
+
+    const onVideoPlaying = useCallback(() => {
+      onVideoPlaybackStateChanged();
+      onBuffer?.({isBuffering: false});
+    }, [onVideoPlaybackStateChanged, onBuffer]);
+
+    const onVideoStalled = useCallback(() => {
+      onVideoPlaybackStateChanged();
+      onBuffer?.({isBuffering: true});
+    }, [onVideoPlaybackStateChanged, onBuffer]);
+
+    const onVideoSuspend = useCallback(() => {
+      onVideoPlaybackStateChanged();
+      onBuffer?.({isBuffering: true});
+    }, [onVideoPlaybackStateChanged, onBuffer]);
+
+    const onVideoWaiting = useCallback(() => {
+      onVideoPlaybackStateChanged();
+      onBuffer?.({isBuffering: true});
+    }, [onVideoPlaybackStateChanged, onBuffer]);
 
     const onVideoEnd = useCallback(() => {
       onEnd?.();
@@ -717,12 +744,12 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       error: onVideoError,
       progress: onVideoProgress,
       seeked: onVideoSeek,
-      play: onVideoPlaybackStateChanged,
+      play: onVideoPlay,
       pause: onVideoPlaybackStateChanged,
-      playing: onVideoPlaybackStateChanged,
-      stalled: onVideoPlaybackStateChanged,
-      suspend: onVideoPlaybackStateChanged,
-      waiting: onVideoPlaybackStateChanged,
+      playing: onVideoPlaying,
+      stalled: onVideoStalled,
+      suspend: onVideoSuspend,
+      waiting: onVideoWaiting,
       timeupdate: onVideoProgress,
       ratechange: _onPlaybackRateChange,
       ended: onVideoEnd,
