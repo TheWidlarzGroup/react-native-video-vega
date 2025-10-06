@@ -85,35 +85,6 @@ id = "com.amazon.gipc.uuid.*"
 
 For complete setup instructions, see the [Amazon Vega Media Player Setup documentation](https://developer.amazon.com/docs/vega/0.21/media-player-setup.html).
 
-## Example
-
-To run example you need to have setup [React Native for Vega](https://developer.amazon.com/docs/vega/0.21/vega-develop.html)
-
-To run example follow these steps:
-
-> [!CAUTION]
-> Use `npm` to install dependencies in the root directory. Other package managers may not work correctly.
-
-```bash
-# Install dependencies in the root directory
-npm install --force
-
-# Go to example directory
-cd example
-npm install
-
-# build the project
-npm run build:debug
-
-# Run Simulator & start metro bundler
-kepler virtual-device start
-npm start
-kepler device start-port-forwarding --device VirtualDevice -p 8081 --forward false
-
-# Run the app
-kepler run-kepler build/aarch64-debug/keplerrnvideoexample_aarch64.vpkg com.anonymous.rnvexample.main -d VirtualDevice
-```
-
 ## Usage
 
 ```javascript
@@ -154,6 +125,35 @@ var styles = StyleSheet.create({
     right: 0,
   },
 });
+```
+
+## Running the Example App
+
+To run the example app from this repository, you need to have setup [React Native for Vega](https://developer.amazon.com/docs/vega/0.21/vega-develop.html)
+
+To run the example app follow these steps:
+
+> [!CAUTION]
+> Use `npm` to install dependencies in the root directory. Other package managers may not work correctly.
+
+```bash
+# Install dependencies in the root directory
+npm install --force
+
+# Go to example directory
+cd example
+npm install
+
+# build the project
+npm run build:debug
+
+# Run Simulator & start metro bundler
+kepler virtual-device start
+npm start
+kepler device start-port-forwarding --device VirtualDevice -p 8081 --forward false
+
+# Run the app
+kepler run-kepler build/aarch64-debug/keplerrnvideoexample_aarch64.vpkg com.anonymous.rnvexample.main -d VirtualDevice
 ```
 
 ## Community support
