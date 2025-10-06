@@ -9,6 +9,82 @@ documentation is available at [docs.thewidlarzgroup.com/react-native-video/](htt
 > [!NOTE]
 > Documentation is made for react-native-video, but is should cover all the features of react-native-video-vega
 
+## Installation
+
+To use `react-native-video-vega` in your own React Native for Vega app, follow these steps:
+
+### 1. Install Dependencies
+
+```bash
+npm install react-native-video-vega @amazon-devices/react-native-w3cmedia
+```
+
+### 2. Configure Babel
+
+Update your `babel.config.js` file to avoid runtime errors:
+
+```javascript
+module.exports = {
+  presets: [
+    [
+      'module:metro-react-native-babel-preset',
+      {useTransformReactJSXExperimental: true},
+    ],
+  ],
+  plugins: [
+    [
+      '@babel/plugin-transform-react-jsx',
+      {
+        runtime: 'automatic',
+      },
+    ],
+  ],
+};
+```
+
+### 3. Update App Manifest
+
+Add the required permissions to your `manifest.toml` file:
+
+```toml
+[wants]
+[[wants.service]]
+id = "com.amazon.mediametrics.service" # Required for metrics service
+
+[[wants.service]]
+id = "com.amazon.media.server"
+
+[[wants.service]]
+id = "com.amazon.gipc.uuid.*"
+
+[[wants.service]]
+id = "com.amazon.media.playersession.service"
+
+[[wants.privilege]]
+id = "com.amazon.devconf.privilege.accessibility" # Required for captions
+
+[[wants.service]]
+id = "com.amazon.mediabuffer.service"
+
+[[wants.service]]
+id = "com.amazon.mediatransform.service"
+
+[[wants.service]]
+id = "com.amazon.audio.stream"
+
+[[wants.service]]
+id = "com.amazon.audio.control"
+
+[[wants.service]]
+id = "com.amazon.audio.system"
+
+[offers]
+[[offers.service]]
+id = "com.amazon.gipc.uuid.*"
+```
+
+For complete setup instructions, see the [Amazon Vega Media Player Setup documentation](https://developer.amazon.com/docs/vega/0.21/media-player-setup.html).
+
 ## Example
 
 To run example you need to have setup [React Native for Vega](https://developer.amazon.com/docs/vega/0.21/vega-develop.html)
@@ -50,23 +126,23 @@ import Video, {VideoRef} from 'react-native-video-vega';
 // on a single screen if you like.
 
 const VideoPlayer = () => {
- const videoRef = useRef<VideoRef>(null);
- const background = require('./background.mp4');
+  const videoRef = useRef < VideoRef > null;
+  const background = require('./background.mp4');
 
- return (
-   <Video 
-    // Can be a URL or a local file.
-    source={background}
-    // Store reference  
-    ref={videoRef}
-    // Callback when remote video is buffering                                      
-    onBuffer={onBuffer}
-    // Callback when video cannot be loaded              
-    onError={onError}               
-    style={styles.backgroundVideo}
-   />
- )
-}
+  return (
+    <Video
+      // Can be a URL or a local file.
+      source={background}
+      // Store reference
+      ref={videoRef}
+      // Callback when remote video is buffering
+      onBuffer={onBuffer}
+      // Callback when video cannot be loaded
+      onError={onError}
+      style={styles.backgroundVideo}
+    />
+  );
+};
 
 // Later on in your styles..
 var styles = StyleSheet.create({
