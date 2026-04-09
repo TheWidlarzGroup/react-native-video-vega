@@ -100,6 +100,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
   ) => {
     const videoPlayer = useRef<VideoPlayer | null>(null);
     const isSeeking = useRef(false);
+    const currentSourceUri = useRef<string | null>(null);
 
     const _renderLoader = useMemo(
       () =>
@@ -139,6 +140,13 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         }
 
         const resolvedSource = resolveAssetSourceForVideo(_source);
+
+        // Guard: don't re-create the player if the URI hasn't changed
+        if (resolvedSource.uri === currentSourceUri.current && videoPlayer.current) {
+          return;
+        }
+        currentSourceUri.current = resolvedSource.uri ?? null;
+
         videoPlayer.current = new VideoPlayer();
 
         if (resolvedSource.uri || !videoPlayer.current) {
@@ -308,7 +316,9 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         return;
       }
 
-      videoPlayer.current.play();
+      videoPlayer.current.play().catch(() => {
+        // Ignore - play() can reject if called before media is ready
+      });
     }, []);
 
     const handlePause = useCallback(() => {
